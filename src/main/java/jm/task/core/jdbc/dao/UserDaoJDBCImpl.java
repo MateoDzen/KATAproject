@@ -16,6 +16,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     }
 
+    @Override
     public void createUsersTable() {
         try (Util util = new Util(); Statement statement = util.getConnection().createStatement()) {
             statement.execute("CREATE TABLE mydbtest.users (" +
@@ -25,18 +26,20 @@ public class UserDaoJDBCImpl implements UserDao {
                     "age INT NOT NULL," +
                     "PRIMARY KEY (id))");
         } catch (Exception e) {
-            System.out.println("Таблица users уже существует!");;
+            System.out.println("Таблица users уже существует!");
         }
     }
 
+    @Override
     public void dropUsersTable() {
         try (Util util = new Util(); Statement statement = util.getConnection().createStatement()) {
             statement.execute("DROP TABLE  mydbtest.users");
         } catch (Exception e) {
-            System.out.println("Таблицы users не существует!");;
+            System.out.println("Таблицы users не существует!");
         }
     }
 
+    @Override
     public void saveUser(String name, String lastName, byte age) {
         try (Util util = new Util(); PreparedStatement statement = util.getConnection()
                 .prepareStatement("INSERT INTO mydbtest.users (name, lastname, age) VALUES (?,?,?)")) {
@@ -49,6 +52,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
+    @Override
     public void removeUserById(long id) {
         try (Util util = new Util(); PreparedStatement statement = util.getConnection()
                 .prepareStatement("DELETE FROM mydbtest.users WHERE id=?")) {
@@ -59,6 +63,7 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
+    @Override
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         try (Util util = new Util(); PreparedStatement statement = util.getConnection()
@@ -74,6 +79,7 @@ public class UserDaoJDBCImpl implements UserDao {
         return list;
     }
 
+    @Override
     public void cleanUsersTable() {
         try (Util util = new Util(); Statement statement = util.getConnection()
                 .createStatement()) {

@@ -1,0 +1,28 @@
+Index: src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jm.task.core.jdbc.dao;\r\n\r\nimport jm.task.core.jdbc.model.User;\r\nimport jm.task.core.jdbc.util.Util;\r\n\r\nimport java.sql.PreparedStatement;\r\nimport java.sql.ResultSet;\r\nimport java.sql.SQLException;\r\nimport java.sql.Statement;\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class UserDaoJDBCImpl implements UserDao {\r\n\r\n    public UserDaoJDBCImpl() {\r\n\r\n    }\r\n\r\n    public void createUsersTable() {\r\n        try (Util util = new Util(); Statement statement = util.getConnection().createStatement()) {\r\n            statement.execute(\"CREATE TABLE mydbtest.users (\" +\r\n                    \"id BIGINT NOT NULL  AUTO_INCREMENT,\" +\r\n                    \"name VARCHAR(45) NOT NULL,\" +\r\n                    \"lastname VARCHAR(45) NOT NULL,\" +\r\n                    \"age INT NOT NULL,\" +\r\n                    \"PRIMARY KEY (id))\");\r\n        } catch (Exception e) {\r\n            System.out.println(\"Таблица users уже существует!\");;\r\n        }\r\n    }\r\n\r\n    public void dropUsersTable() {\r\n        try (Util util = new Util(); Statement statement = util.getConnection().createStatement()) {\r\n            statement.execute(\"DROP TABLE  mydbtest.users\");\r\n        } catch (Exception e) {\r\n            System.out.println(\"Таблицы users не существует!\");;\r\n        }\r\n    }\r\n\r\n    public void saveUser(String name, String lastName, byte age) {\r\n        try (Util util = new Util(); PreparedStatement statement = util.getConnection()\r\n                .prepareStatement(\"INSERT INTO mydbtest.users (name, lastname, age) VALUES (?,?,?)\")) {\r\n            statement.setString(1, name);\r\n            statement.setString(2, lastName);\r\n            statement.setInt(3, age);\r\n            statement.execute();\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    public void removeUserById(long id) {\r\n        try (Util util = new Util(); PreparedStatement statement = util.getConnection()\r\n                .prepareStatement(\"DELETE FROM mydbtest.users WHERE id=?\")) {\r\n            statement.setInt(1, (int) id);\r\n            statement.executeUpdate();\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    public List<User> getAllUsers() {\r\n        List<User> list = new ArrayList<>();\r\n        try (Util util = new Util(); PreparedStatement statement = util.getConnection()\r\n                .prepareStatement(\"SELECT  * FROM mydbtest.users\")) {\r\n            ResultSet resultSet = statement.executeQuery();\r\n            while (resultSet.next()) {\r\n                list.add(new User(resultSet.getString(2), resultSet.getString(3)\r\n                        , resultSet.getByte(4)).setId(resultSet.getLong(1)));\r\n            }\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n        return list;\r\n    }\r\n\r\n    public void cleanUsersTable() {\r\n        try (Util util = new Util(); Statement statement = util.getConnection()\r\n                .createStatement()) {\r\n            statement.executeUpdate(\"DELETE FROM mydbtest.users\");\r\n        } catch (Exception e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java b/src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java
+--- a/src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java	(revision b24cac7295c6cc9e95a7d0652fc31c74bdf9aa4a)
++++ b/src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java	(date 1684753762302)
+@@ -25,7 +25,7 @@
+                     "age INT NOT NULL," +
+                     "PRIMARY KEY (id))");
+         } catch (Exception e) {
+-            System.out.println("Таблица users уже существует!");;
++            System.out.println("Таблица users уже существует!");
+         }
+     }
+ 
+@@ -33,7 +33,7 @@
+         try (Util util = new Util(); Statement statement = util.getConnection().createStatement()) {
+             statement.execute("DROP TABLE  mydbtest.users");
+         } catch (Exception e) {
+-            System.out.println("Таблицы users не существует!");;
++            System.out.println("Таблицы users не существует!");
+         }
+     }
+ 
